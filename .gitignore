@@ -4,3 +4,4 @@
 *.ptx
 *.cubin
 *.fatbin
+twitter_credentials.py
