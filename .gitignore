@@ -5,3 +5,4 @@
 *.cubin
 *.fatbin
 twitter_credentials.py
+__pycache__
