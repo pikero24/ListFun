@@ -1,5 +1,6 @@
 #Libraries
 import tweepy
+import time
 #External Files
 import twitter_credentials
 
@@ -17,23 +18,43 @@ if __name__ == "__main__":
 	user = api.get_user("JCTecklenburg")
 	# user = api.friends_ids("JCTecklenburg")
 	# print(user.followers_count)
-
 	userLists = api.lists_all(user.name)
-	for tList in userLists:
-		print (tList.id, tList.name,tList.slug)
-		print("----------------------------------------------------------------------")
-		members = []
-		for member in tweepy.Cursor(api.list_members, 'JCTecklenburg', tList.slug).items():
-			members.append(member.name)
-		print(members)
+
+	#List to reference in the followers dict
+	listRef = []
+	for i in range(len(userLists)):
+		#initialize list
+		listRef.append(False)
+	#Followers["user.id"] = [user.id, user.name, user.screen_name,[booleans of list membership]]
+	followers = {}
+
+	for page in tweepy.Cursor(api.friends).pages(3):
+		for follow in page:
+			# print(follow.name, follow.screen_name, follow.id)
+			followers[follow.id] = [follow.id, follow.name, follow.screen_name,listRef]
+			print(followers[follow.id])
+		print("__________")
+		time.sleep(2)
+
+
+	#Get Lists, then print out members
+	# userLists = api.lists_all(user.name)
+	# listID = 0
+	# for tList in userLists:
+	# 	print (tList.id, tList.name,tList.slug)
+	# 	print("---------------------------------------------")
+	# 	members = []
+	# 	for member in tweepy.Cursor(api.list_members, 'JCTecklenburg', tList.slug).items():
+	# 		members.append(member.name)
+	# 	print(members)
+	# 	listID = listID + 1
 	
+
+
 	# 	memmbers = api.list_members(tList.id)
 		# print(api.get_list(tList.id))
 
 
-
-	# for follow in user.friends():
-	# 	print(follow.name, follow.screen_name, follow.id)
 	# 	for tList in userLists:
 	# 		if 
 
