@@ -1,6 +1,7 @@
 #Libraries
 import tweepy
 import time
+import copy
 #External Files
 import twitter_credentials
 
@@ -8,6 +9,16 @@ def print_tweets(api):
 	public_tweets = api.home_timeline()
 	for tweet in public_tweets:
 		print(tweet.text)
+
+def checkKey(dict,key):
+	if key in dict:
+		return True
+	else:
+		return False
+
+def printDict(dict):
+	for element in dict:
+		print(dict[element])
 
 if __name__ == "__main__":
 	auth = tweepy.OAuthHandler(twitter_credentials.CONSUMER_KEY, twitter_credentials.CONSUMER_SECRET)
@@ -28,28 +39,37 @@ if __name__ == "__main__":
 	#Followers["user.id"] = [user.id, user.name, user.screen_name,[booleans of list membership]]
 	followers = {}
 
-	for page in tweepy.Cursor(api.friends).pages(3):
+	print("GETTING FOLLOWERs")
+	for page in tweepy.Cursor(api.friends).pages(5):
 		for follow in page:
 			# print(follow.name, follow.screen_name, follow.id)
-			followers[follow.id] = [follow.id, follow.name, follow.screen_name,listRef]
-			print(followers[follow.id])
-		print("__________")
+			followers[follow.id] = [follow.id, follow.name, follow.screen_name,copy.deepcopy(listRef)]
+			# print(followers[follow.id])
+		print(".", end = '')
 		time.sleep(2)
+	print(" ")
 
 
 	#Get Lists, then print out members
 	# userLists = api.lists_all(user.name)
-	# listID = 0
-	# for tList in userLists:
-	# 	print (tList.id, tList.name,tList.slug)
-	# 	print("---------------------------------------------")
+	print("GETTING LISTs")
+	listID = 0
+	for tList in userLists:
+		print(" ")
+		print (tList.id, tList.name,tList.slug)
+		# print("---------------------------------------------")
 	# 	members = []
-	# 	for member in tweepy.Cursor(api.list_members, 'JCTecklenburg', tList.slug).items():
-	# 		members.append(member.name)
+		for member in tweepy.Cursor(api.list_members, 'JCTecklenburg', tList.slug).items():
+			if(checkKey(followers,member.id)):
+				followers[member.id][3][listID] = True
+			# members.append(member.name)
+			print(".", end = '')
 	# 	print(members)
-	# 	listID = listID + 1
+		listID += 1
+	print(" ")
 	
-
+	
+	printDict(followers)
 
 	# 	memmbers = api.list_members(tList.id)
 		# print(api.get_list(tList.id))
