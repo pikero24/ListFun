@@ -23,7 +23,7 @@ def printDict(dict):
 if __name__ == "__main__":
 	auth = tweepy.OAuthHandler(twitter_credentials.CONSUMER_KEY, twitter_credentials.CONSUMER_SECRET)
 	auth.set_access_token(twitter_credentials.ACCESS_TOKEN,twitter_credentials.ACCESS_TOKEN_SECRET)
-	api = tweepy.API(auth)
+	api = tweepy.API(auth,wait_on_rate_limit=True)
 
 	#print_tweets(api)
 	user = api.get_user("JCTecklenburg")
@@ -31,10 +31,9 @@ if __name__ == "__main__":
 	# print(user.followers_count)
 	userLists = api.lists_all(user.name)
 
-	#List to reference in the followers dict
+	#initialize list
 	listRef = []
 	for i in range(len(userLists)):
-		#initialize list
 		listRef.append(False)
 	#Followers["user.id"] = [user.id, user.name, user.screen_name,[booleans of list membership]]
 	followers = {}
@@ -46,7 +45,7 @@ if __name__ == "__main__":
 			followers[follow.id] = [follow.id, follow.name, follow.screen_name,copy.deepcopy(listRef)]
 			# print(followers[follow.id])
 		print(".", end = '')
-		time.sleep(2)
+		time.sleep(1.5)
 	print(" ")
 
 
@@ -68,16 +67,5 @@ if __name__ == "__main__":
 		listID += 1
 	print(" ")
 	
-	
-	printDict(followers)
+	# printDict(followers)
 
-	# 	memmbers = api.list_members(tList.id)
-		# print(api.get_list(tList.id))
-
-
-	# 	for tList in userLists:
-	# 		if 
-
-	# print( user.friends()[3] )
-
-	
