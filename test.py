@@ -78,8 +78,6 @@ if __name__ == "__main__":
 				# print(True)
 				noList = False
 				continue
-			else:
-				# print(False)
 		if noList == True:
 			print("https://twitter.com/" + followers[userInfo][2] + " " , followers[userInfo][3])
 
