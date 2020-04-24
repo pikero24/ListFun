@@ -57,15 +57,29 @@ if __name__ == "__main__":
 		print(" ")
 		print (tList.id, tList.name,tList.slug)
 		# print("---------------------------------------------")
-	# 	members = []
+		# members = []
 		for member in tweepy.Cursor(api.list_members, 'JCTecklenburg', tList.slug).items():
 			if(checkKey(followers,member.id)):
 				followers[member.id][3][listID] = True
 			# members.append(member.name)
 			print(".", end = '')
-	# 	print(members)
+		# print(members)
 		listID += 1
 	print(" ")
 	
 	# printDict(followers)
+
+	for userInfo in followers:
+		noList = True;
+		# print(followers[userInfo][2] , " ", followers[userInfo][3])
+		for listCheck in followers[userInfo][3]:
+			# print(listCheck, followers[userInfo][3][listCheck])
+			if listCheck:
+				# print(True)
+				noList = False
+				continue
+			else:
+				# print(False)
+		if noList == True:
+			print("https://twitter.com/" + followers[userInfo][2] + " " , followers[userInfo][3])
 
