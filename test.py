@@ -23,7 +23,7 @@ def printDict(dict):
 if __name__ == "__main__":
 	auth = tweepy.OAuthHandler(twitter_credentials.CONSUMER_KEY, twitter_credentials.CONSUMER_SECRET)
 	auth.set_access_token(twitter_credentials.ACCESS_TOKEN,twitter_credentials.ACCESS_TOKEN_SECRET)
-	api = tweepy.API(auth,wait_on_rate_limit=True)
+	api = tweepy.API(auth, wait_on_rate_limit=True, wait_on_rate_limit_notify=True, compression=True)
 
 	#print_tweets(api)
 	user = api.get_user("JCTecklenburg")
@@ -39,14 +39,17 @@ if __name__ == "__main__":
 	followers = {}
 
 	print("GETTING FOLLOWERs")
-	for page in tweepy.Cursor(api.friends).pages(5):
+
+
+	for page in tweepy.Cursor(api.friends).pages():
 		for follow in page:
 			# print(follow.name, follow.screen_name, follow.id)
 			followers[follow.id] = [follow.id, follow.name, follow.screen_name,copy.deepcopy(listRef)]
 			# print(followers[follow.id])
-		print(".", end = '')
-		time.sleep(1.5)
-	print(" ")
+		# print(".", end = '')
+		print(len(followers))
+		time.sleep(10)
+	print(len(followers))
 
 
 	#Get Lists, then print out members
@@ -75,7 +78,7 @@ if __name__ == "__main__":
 		for listCheck in followers[userInfo][3]:
 			# print(listCheck, followers[userInfo][3][listCheck])
 			if listCheck:
-				# print(True)
+				# print(True) 
 				noList = False
 				continue
 		if noList == True:
